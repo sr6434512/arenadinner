@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Swords, Trophy, Users, Zap, Shield, ChevronRight,
-  Star, BarChart3, Gamepad2, ArrowRight
+  Star, BarChart3, Gamepad2, ArrowRight, Activity
 } from 'lucide-react';
 import { TournamentCard } from '../components/tournament/TournamentCard';
 import { DEMO_TOURNAMENTS } from '../lib/demoData';
@@ -232,41 +232,74 @@ export function LandingPage() {
           </div>
 
           <div className="relative">
-            <div className="arena-card p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-display text-lg font-bold text-white">Live Leaderboard</h3>
-                <span className="live-indicator">LIVE</span>
+            <div className="arena-card overflow-hidden">
+              <div className="bg-gradient-to-br from-cyan-500/10 via-arena-surface to-arena-surface px-6 pt-6 pb-4 border-b border-arena-border">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-2">
+                    <span className="live-indicator">MATCH 2 LIVE</span>
+                  </div>
+                  <Link
+                    to="/leaderboard"
+                    className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 transition-colors"
+                  >
+                    Full board <ArrowRight size={12} />
+                  </Link>
+                </div>
+                <h3 className="font-display text-lg font-bold text-white mt-2">BGMI Pro League — Match 2</h3>
+                <p className="text-xs text-slate-500 mt-0.5">Erangel · 18 teams remaining</p>
               </div>
-              <table className="w-full">
-                <thead>
-                  <tr className="text-2xs text-slate-500 uppercase tracking-wider">
-                    <th className="text-left pb-2">#</th>
-                    <th className="text-left pb-2">Team</th>
-                    <th className="text-right pb-2">Kills</th>
-                    <th className="text-right pb-2">Pts</th>
-                  </tr>
-                </thead>
-                <tbody className="space-y-1">
-                  {[
-                    { rank: 1, team: 'Godlike', kills: 47, pts: 62 },
-                    { rank: 2, team: 'SouL', kills: 38, pts: 50 },
-                    { rank: 3, team: 'Team XO', kills: 35, pts: 45 },
-                    { rank: 4, team: 'OR Esports', kills: 29, pts: 37 },
-                  ].map((row, i) => (
-                    <tr key={row.rank} className="border-t border-arena-border">
-                      <td className="py-2.5 text-sm">
-                        <span className={i === 0 ? 'rank-gold' : i === 1 ? 'rank-silver' : i === 2 ? 'rank-bronze' : 'text-slate-500'}>
-                          {row.rank}
-                        </span>
-                      </td>
-                      <td className="py-2.5 text-sm text-white font-medium">{row.team}</td>
-                      <td className="py-2.5 text-sm text-slate-400 text-right">{row.kills}</td>
-                      <td className="py-2.5 text-sm font-bold text-gold-400 text-right">{row.pts}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+
+              <div className="px-6 py-3 border-b border-arena-border grid grid-cols-4 text-2xs text-slate-500 uppercase tracking-wider">
+                <span>#</span>
+                <span className="col-span-2">Team</span>
+                <span className="text-right">Pts</span>
+              </div>
+
+              <div className="divide-y divide-arena-border">
+                {[
+                  { rank: 1, team: 'Godlike', kills: 14, pts: 62, trend: 'up' },
+                  { rank: 2, team: 'SouL', kills: 11, pts: 50, trend: 'up' },
+                  { rank: 3, team: 'Team XO', kills: 9, pts: 45, trend: 'same' },
+                  { rank: 4, team: 'OR Esports', kills: 8, pts: 37, trend: 'down' },
+                  { rank: 5, team: 'S8UL', kills: 6, pts: 29, trend: 'up' },
+                ].map((row, i) => (
+                  <div key={row.rank} className="px-6 py-3 grid grid-cols-4 items-center group hover:bg-arena-hover transition-colors">
+                    <span className={
+                      i === 0 ? 'rank-gold font-bold' :
+                      i === 1 ? 'rank-silver font-bold' :
+                      i === 2 ? 'rank-bronze font-bold' :
+                      'text-slate-500 text-sm'
+                    }>
+                      {row.rank}
+                    </span>
+                    <div className="col-span-2 flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-xs font-bold text-slate-300 flex-shrink-0">
+                        {row.team[0]}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-white leading-tight">{row.team}</p>
+                        <p className="text-2xs text-slate-500">{row.kills} kills</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-sm font-bold font-display text-gold-400">{row.pts}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="px-6 py-4 border-t border-arena-border">
+                <Link to="/leaderboard">
+                  <button className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-semibold hover:bg-cyan-500/20 hover:border-cyan-500/30 transition-all">
+                    <Activity size={15} />
+                    Watch Live Leaderboard
+                  </button>
+                </Link>
+              </div>
             </div>
+
+            <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-danger-500 animate-ping opacity-40 pointer-events-none" />
+            <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-danger-500 opacity-70 pointer-events-none" />
           </div>
         </div>
       </section>
