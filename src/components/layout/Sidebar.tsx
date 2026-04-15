@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, Trophy, Users, Wallet, Settings,
-  Plus, BarChart3, ShieldCheck, Building2, Swords, ChevronRight
+  Plus, BarChart3, ShieldCheck, Building2, Swords, ChevronRight, Gift
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -23,6 +23,7 @@ export function Sidebar() {
     { label: 'My Tournaments', path: '/dashboard/tournaments', icon: <Trophy size={18} /> },
     { label: 'My Team', path: '/dashboard/team', icon: <Users size={18} /> },
     { label: 'Wallet', path: '/dashboard/wallet', icon: <Wallet size={18} /> },
+    { label: 'Referrals', path: '/dashboard/referrals', icon: <Gift size={18} /> },
     { label: 'Profile', path: '/dashboard/profile', icon: <Settings size={18} /> },
   ];
 

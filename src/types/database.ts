@@ -1,5 +1,6 @@
 export type UserRole = 'player' | 'captain' | 'organizer' | 'admin';
 export type GameType = 'bgmi' | 'freefire';
+export type ReferralStatus = 'pending' | 'confirmed' | 'rewarded';
 export type TournamentStatus = 'draft' | 'open' | 'ongoing' | 'completed' | 'cancelled';
 export type MatchStatus = 'scheduled' | 'lobby' | 'in_progress' | 'completed';
 export type TeamSize = 'solo' | 'duo' | 'squad';
@@ -287,4 +288,45 @@ export interface TransactionInsert {
   type: TransactionType;
   amount: number;
   description: string;
+}
+
+export interface ReferralCode {
+  id: string;
+  user_id: string;
+  code: string;
+  total_uses: number;
+  total_rewards_earned: number;
+  created_at: string;
+}
+
+export interface Referral {
+  id: string;
+  referrer_id: string;
+  referee_id: string;
+  referral_code_id: string;
+  status: ReferralStatus;
+  reward_amount: number;
+  created_at: string;
+  confirmed_at: string | null;
+  rewarded_at: string | null;
+  referee?: Pick<Profile, 'username' | 'avatar_url'>;
+}
+
+export interface SeasonPassTier {
+  id: string;
+  tier_number: number;
+  required_referrals: number;
+  reward_amount: number;
+  title: string;
+  description: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface SeasonPassClaim {
+  id: string;
+  user_id: string;
+  tier_id: string;
+  reward_amount: number;
+  claimed_at: string;
 }

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Swords, Mail, Lock, User, Gamepad2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Swords, Mail, Lock, User, Gamepad2, Gift } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Button } from '../../components/ui/Button';
 import { Input, Select } from '../../components/ui/Input';
@@ -9,9 +9,11 @@ import type { UserRole } from '../../types/database';
 
 export function RegisterPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { notify } = useNotification();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [refCode, setRefCode] = useState('');
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -20,6 +22,11 @@ export function RegisterPage() {
     bgmi_uid: '',
     ff_uid: '',
   });
+
+  useEffect(() => {
+    const ref = searchParams.get('ref');
+    if (ref) setRefCode(ref.toUpperCase());
+  }, [searchParams]);
 
   const updateForm = (key: string, value: string) => setForm((f) => ({ ...f, [key]: value }));
 
@@ -61,6 +68,13 @@ export function RegisterPage() {
         return;
       }
 
+      if (refCode.trim()) {
+        await supabase.rpc('fn_use_referral_code', {
+          p_code: refCode.trim().toUpperCase(),
+          p_referee_id: data.user.id,
+        });
+      }
+
       notify('success', 'Account created!', 'Welcome to ArenaDinner.');
       if (form.role === 'organizer') navigate('/org/dashboard');
       else navigate('/dashboard');
@@ -83,6 +97,18 @@ export function RegisterPage() {
         <div className="arena-card p-8">
           <h1 className="font-display text-3xl font-bold text-white mb-1">Create account</h1>
           <p className="text-slate-400 text-sm mb-6">Join the platform and start competing</p>
+
+          {refCode && (
+            <div className="flex items-center gap-3 bg-gold-500/10 border border-gold-500/20 rounded-xl px-4 py-3 mb-5">
+              <Gift size={16} className="text-gold-400 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-gold-300">You were invited!</p>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Referral code <span className="font-mono font-bold text-gold-400">{refCode}</span> will be applied on registration.
+                </p>
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -145,6 +171,17 @@ export function RegisterPage() {
                   fullWidth
                 />
               </div>
+            </div>
+
+            <div className="border-t border-arena-border pt-4">
+              <Input
+                label="Invite Code (optional)"
+                placeholder="XXXXXXXX"
+                value={refCode}
+                onChange={(e) => setRefCode(e.target.value.toUpperCase())}
+                icon={<Gift size={16} />}
+                fullWidth
+              />
             </div>
 
             {error && (

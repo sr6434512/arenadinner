@@ -15,6 +15,7 @@ const OrgDashboard = lazy(() => import('./pages/organizer/OrgDashboard').then((m
 const OrgTournamentsPage = lazy(() => import('./pages/organizer/OrgTournamentsPage').then((m) => ({ default: m.OrgTournamentsPage })));
 const CreateTournamentPage = lazy(() => import('./pages/organizer/CreateTournamentPage').then((m) => ({ default: m.CreateTournamentPage })));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard })));
+const ReferralDashboard = lazy(() => import('./pages/dashboard/ReferralDashboard').then((m) => ({ default: m.ReferralDashboard })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
 
 function LoadingScreen() {
@@ -55,6 +56,11 @@ function AppRoutes() {
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <PlayerDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/referrals" element={
+          <ProtectedRoute>
+            <ReferralDashboard />
           </ProtectedRoute>
         } />
         <Route path="/dashboard/*" element={

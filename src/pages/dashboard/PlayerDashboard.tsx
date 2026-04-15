@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Trophy, Users, Wallet, Bell, Clock, ArrowRight,
-  TrendingUp, Swords, Calendar, ChevronRight, Star
+  TrendingUp, Swords, Calendar, ChevronRight, Star, Gift, Sparkles
 } from 'lucide-react';
 import { PageShell } from '../../components/layout/PageShell';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
@@ -247,6 +247,24 @@ export function PlayerDashboard() {
                 ))}
               </CardBody>
             </Card>
+
+            <Link to="/dashboard/referrals">
+              <div className="arena-card p-4 border-gold-500/20 bg-gradient-to-br from-gold-500/10 to-gold-700/5 hover:border-gold-500/40 hover:bg-gold-500/15 transition-all cursor-pointer">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gold-500/20 border border-gold-500/30 flex items-center justify-center flex-shrink-0">
+                    <Gift size={18} className="text-gold-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <p className="font-bold text-white text-sm">Referral Rewards</p>
+                      <Sparkles size={12} className="text-gold-400" />
+                    </div>
+                    <p className="text-2xs text-slate-400 mt-0.5">Invite friends, earn wallet credits</p>
+                  </div>
+                  <ChevronRight size={16} className="text-gold-500 flex-shrink-0" />
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
